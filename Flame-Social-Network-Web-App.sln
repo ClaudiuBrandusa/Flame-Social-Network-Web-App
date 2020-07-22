@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flame-Social-Network-Web-App", "Flame-Social-Network-Web-App\Flame-Social-Network-Web-App.csproj", "{285F5849-8A91-4467-B332-7E86CD9BF747}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{285F5849-8A91-4467-B332-7E86CD9BF747}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{285F5849-8A91-4467-B332-7E86CD9BF747}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{285F5849-8A91-4467-B332-7E86CD9BF747}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{285F5849-8A91-4467-B332-7E86CD9BF747}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1711AD69-A5A9-41AC-9C8F-76D5F1804926}
+	EndGlobalSection
+EndGlobal
