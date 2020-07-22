@@ -7,4 +7,5 @@ This is an open source project where we will create a Social Network platform by
 
 # Collaborators
 https://github.com/iulian-b97  
-https://github.com/andreipintilie
+https://github.com/andreipintilie  
+https://github.com/ClaudiuBrandusa
