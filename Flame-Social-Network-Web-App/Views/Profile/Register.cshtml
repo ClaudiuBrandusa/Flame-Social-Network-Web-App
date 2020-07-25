@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "_Layout";
+}
+@model RegisterModel
+
+<h2>Register page</h2>
+
+<form asp-action="Register" asp-controller="Profile" method="post">
+    @Html.DisplayNameFor(model => model.Username):<input type="text" name="username" value="" />
+    @Html.DisplayNameFor(model => model.Email):<input type="text" name="email" value="" />
+    @Html.DisplayNameFor(model => model.Password):<input type="text" name="password" value="" />
+    @Html.DisplayNameFor(model => model.ConfirmPassword):<input type="text" name="confirmpassword" value="" />
+    <button type="submit">Register</button>
+    <h6>Already have an account? <a asp-controller="Profile" asp-action="Login">Sign in</a></h6>
+    <div asp-validation-summary="All" class="text-danger"></div>
+</form>

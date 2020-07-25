@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     @inject Microsoft.Extensions.Options.IOptions<AppSettings> AppSettings
+    @inject Microsoft.AspNetCore.Identity.SignInManager<Microsoft.AspNetCore.Identity.IdentityUser> signInUser
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
@@ -11,25 +12,45 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Newsfeed" asp-action="Index">@AppSettings.Value.ApplicationName</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+            <a class="navbar-brand" asp-controller="Newsfeed" asp-action="Index">@AppSettings.Value.ApplicationName</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                @if (signInUser.IsSignedIn(User))
+                {
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Newsfeed" asp-action="Index">Newsfeed</a>
+                            <a class="nav-link text-dark" asp-controller="Newsfeed" asp-action="Index">Newsfeed</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">My Account</a>
+                            <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index">My Account</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Contacts" asp-action="Index">Contacts</a>
+                            <a class="nav-link text-dark" asp-controller="Contacts" asp-action="Index">Contacts</a>
                         </li>
                     </ul>
-                </div>
+                }
+            </div>
+            <div class="navbar-nav d-flex flex-row-reverse">
+                <ul class="navbar-nav">
+                    @if (signInUser.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Logout">Logout</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Profile" asp-action="Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Profile" asp-action="Register">Register</a>
+                        </li>
+                    }
+                </ul>
             </div>
         </nav>
     </header>

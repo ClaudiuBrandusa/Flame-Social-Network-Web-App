@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Flame_Social_Network_Web_App.Controllers
 {
+    [Authorize]
     public class ContactsController : Controller
     {
         public IActionResult Index()

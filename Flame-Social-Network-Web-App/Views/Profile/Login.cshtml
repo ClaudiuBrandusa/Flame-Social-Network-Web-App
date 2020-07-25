@@ -1,0 +1,15 @@
+﻿@{ 
+    Layout = "_Layout";
+}
+
+@model LoginModel
+
+<h2>Login page</h2>
+
+<form asp-action="Login" asp-controller="Profile" method="post">
+    @Html.DisplayNameFor(model => model.Username):<input type="text" name="username" value="" />
+    @Html.DisplayNameFor(model => model.Password):<input type="text" name="password" value="" />
+    <button type="submit">Login</button>
+    <h6>Don't have an account? <a asp-controller="Profile" asp-action="Register">Sign up</a></h6>
+    <div asp-validation-summary="All" class="text-danger"></div>
+</form>

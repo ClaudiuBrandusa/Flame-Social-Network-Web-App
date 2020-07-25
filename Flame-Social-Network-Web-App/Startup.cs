@@ -6,6 +6,7 @@ using Flame_Social_Network_Web_App.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,26 @@ namespace Flame_Social_Network_Web_App
             services.AddDbContext<AppDbContext>(config =>
             {
                 config.UseSqlServer(Configuration.GetConnectionString("Default"));
+            });
+
+            services.AddIdentity<IdentityUser, IdentityRole>(config =>
+            {
+                // Password
+                config.Password.RequiredLength = Constants.MinimumPasswordLength;
+                config.Password.RequiredUniqueChars = 1;
+                config.Password.RequireDigit = true;
+                config.Password.RequireNonAlphanumeric = false; // because we do not want to force the user the use a too complex password(even if it's better to do so)
+                config.Password.RequireUppercase = false; // same here
+
+                // Email
+                config.SignIn.RequireConfirmedEmail = false; // it will be false for now
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options => // this is how we add the default login path
+            {
+                options.LoginPath = Constants.DefaultLoginPath;
             });
 
             services.AddControllersWithViews();
