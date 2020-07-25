@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Flame_Social_Network_Web_App.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +26,12 @@ namespace Flame_Social_Network_Web_App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
+
+            services.AddDbContext<AppDbContext>(config =>
+            {
+                config.UseSqlServer(Configuration.GetConnectionString("Default"));
+            });
+
             services.AddControllersWithViews();
 
             services.Configure<AppSettings>(Configuration);
@@ -46,6 +54,8 @@ namespace Flame_Social_Network_Web_App
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
