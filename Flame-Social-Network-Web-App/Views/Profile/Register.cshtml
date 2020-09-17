@@ -1,16 +1,25 @@
 ﻿@{
     Layout = "_Layout";
 }
+
 @model RegisterModel
 
-<h2>Register page</h2>
+<div class="registerbox">
+    <form asp-action="Login" asp-controller="Profile" method="post">
 
-<form asp-action="Register" asp-controller="Profile" method="post">
-    @Html.DisplayNameFor(model => model.Username):<input type="text" name="username" value="" />
-    @Html.DisplayNameFor(model => model.Email):<input type="text" name="email" value="" />
-    @Html.DisplayNameFor(model => model.Password):<input type="text" name="password" value="" />
-    @Html.DisplayNameFor(model => model.ConfirmPassword):<input type="text" name="confirmpassword" value="" />
-    <button type="submit">Register</button>
-    <h6>Already have an account? <a asp-controller="Profile" asp-action="Login">Sign in</a></h6>
-    <div asp-validation-summary="All" class="text-danger"></div>
-</form>
+        <img src="~/images/avatar_icon.png" class="avatar" />
+        <h1>Register Here</h1>
+        <div>
+            <p>Email</p>
+            <input type="email" name="" placeholder="Enter Email" />
+            <p>Username</p>
+            <input type="text" name="" placeholder="Enter Username" />
+            <p>Password</p>
+            <input type="password" name="" placeholder="Enter Password" />
+            <p>Confirm Password</p>
+            <input type="password" name="" placeholder="Enter Confirm Password" />
+            <input type="submit" name="" value="Register" />
+        </div>
+
+    </form>
+</div>

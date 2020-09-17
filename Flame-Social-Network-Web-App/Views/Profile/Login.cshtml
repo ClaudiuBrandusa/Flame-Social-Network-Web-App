@@ -4,12 +4,20 @@
 
 @model LoginModel
 
-<h2>Login page</h2>
+<div class="loginbox">
+    <form asp-action="Login" asp-controller="Profile" method="post">
 
-<form asp-action="Login" asp-controller="Profile" method="post">
-    @Html.DisplayNameFor(model => model.Username):<input type="text" name="username" value="" />
-    @Html.DisplayNameFor(model => model.Password):<input type="text" name="password" value="" />
-    <button type="submit">Login</button>
-    <h6>Don't have an account? <a asp-controller="Profile" asp-action="Register">Sign up</a></h6>
-    <div asp-validation-summary="All" class="text-danger"></div>
-</form>
+            <img src="~/images/avatar_icon.png" class="avatar" />
+            <h1>Login Here</h1>
+            <div>
+                <p>Username</p>
+                <input type="text" name="" placeholder="Enter Username" />
+                <p>Password</p>
+                <input type="password" name="" placeholder="Enter Password" />
+                <input type="submit" name="" value="Login" />
+                <a href="#">Lost you password?</a><br />
+                <a href='/Profile/Register'>Don`t have an account?</a>
+            </div>
+
+    </form>
+</div>
