@@ -20,5 +20,9 @@ namespace Flame_Social_Network_Web_App
 
         // Connected Path
         public const string DefaultConnectedPath = "/";
+
+        ///// Chat /////
+        // Message length limit
+        public const int MaxMessageLengthLimit = 10000000; 
     }
 }
