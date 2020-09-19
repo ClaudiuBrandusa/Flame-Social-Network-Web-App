@@ -23,6 +23,8 @@
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 @if (signInUser.IsSignedIn(User))
                 {
+                    <script src="~/lib/signalr/signalr.min.js"></script>
+                    <script src="~/js/chatClient.js" asp-append-version="true"></script>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-controller="Newsfeed" asp-action="Index">Newsfeed</a>
