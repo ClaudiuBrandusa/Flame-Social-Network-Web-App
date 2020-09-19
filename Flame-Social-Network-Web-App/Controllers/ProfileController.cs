@@ -25,6 +25,13 @@ namespace Flame_Social_Network_Web_App.Controllers
         {
             return View();
         }
+
+        [Authorize]
+        public IActionResult MyAccount()
+        {
+            return View();
+        }
+
         public IActionResult Register()
         {
             if(_signInManager.IsSignedIn(User)) // if we are already signed in then we shouldn't be allowed to register

@@ -223,3 +223,27 @@ h1{
 .registerbox a:hover {
     color: #ffc107;
 }
+
+.logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    position: absolute;
+    margin-top: -8px;
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    left: 43.4%;
+    position: absolute;
+}
+
+.myaccount h1 {
+    margin-top: 17%;
+    color: #2a363b;
+    position: center;
+    font-weight: bold;
+    font-size: 25px;
+}
