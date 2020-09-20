@@ -23,6 +23,9 @@ namespace Flame_Social_Network_Web_App
 
         ///// Chat /////
         // Message length limit
-        public const int MaxMessageLengthLimit = 10000000; 
+        public const int MaxMessageLengthLimit = 10000000;
+
+        // Waiting milliseconds time for reconnection
+        public const int MaxReconnectWaitTime = 2000;
     }
 }
