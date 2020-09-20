@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Flame_Social_Network_Web_App.Data
 {
@@ -21,5 +17,6 @@ namespace Flame_Social_Network_Web_App.Data
         {
             base.OnModelCreating(builder);
         }
+
     }
 }

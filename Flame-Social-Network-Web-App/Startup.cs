@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Flame_Social_Network_Web_App.Data;
+using Flame_Social_Network_Web_App.Hubs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +56,36 @@ namespace Flame_Social_Network_Web_App
                 options.LoginPath = Constants.DefaultLoginPath;
             });
 
+            services.AddAuthentication("CookieAuth")
+                .AddCookie("CookieAuth", config =>
+                {
+                    config.Cookie.Name = "Flame.Cookie";
+                    config.LoginPath = Constants.DefaultLoginPath;
+                })
+                .AddJwtBearer(options => {
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"]; // this implements the authorization over the hubs
+                            if (string.IsNullOrEmpty(accessToken) == false)
+                            {
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
+            //services.AddSingleton<RuntimeRepositoryService>();
+
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true; // used for debugging purpose
+            });
+
+            services.AddAuthorization();
+
             services.AddControllersWithViews();
 
             services.Configure<AppSettings>(Configuration);
@@ -82,6 +115,7 @@ namespace Flame_Social_Network_Web_App
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatHub>("/chatHub");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Newsfeed}/{action=Index}/{id?}");

@@ -8,10 +8,15 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/layout.css" />
+    @if (signInUser.IsSignedIn(User))
+    {
+        <link rel="stylesheet" href="~/css/chat.css" />
+    }
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow top-fixed full-width height-5vh">
             <a class="navbar-brand text-white" asp-controller="Newsfeed" asp-action="Index">
                 <img src="~/images/flame.png" class="logo" />
                 <span style="margin-left:50px; font-weight:bold">Flame</span>
@@ -23,8 +28,6 @@
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 @if (signInUser.IsSignedIn(User))
                 {
-                    <script src="~/lib/signalr/signalr.min.js"></script>
-                    <script src="~/js/chatClient.js" asp-append-version="true"></script>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-controller="Newsfeed" asp-action="Index">Newsfeed</a>
@@ -50,20 +53,52 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <div class="row no-gutters top-20 position-absolute w-100 h-100">
+        <!--Contacts-List-->
+        @if (signInUser.IsSignedIn(User))
+        {
+        <div class="col-2 no-gutters overflow-y-auto pr-0">
+            <div class="direction-rtl contacts-list-tab sidebar" id="contacts">
+                <div class="direction-ltr">
+                    <p>There goes the contacts list</p>
+                    <a asp-controller="Contacts" asp-action="chat">Chat</a>
+                    <p id="listCount"></p>
+                    <ul class="text-overflow-normal" id="list">
+                    </ul>
+                    <div class="test">a</div>
+                    <p class="text-overflow-normal">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at auctor ipsum. Cras nec felis felis. Mauris volutpat elementum odio. Vivamus sed imperdiet nunc. Praesent tempus, libero ac convallis rhoncus, dolor nisi tempor leo, ut tempus nulla purus vel arcu. Praesent et lectus id nunc faucibus porttitor sodales quis mauris. Quisque leo nibh, commodo quis magna ac, malesuada elementum mauris. Vivamus sed risus tempor, lobortis lacus et, cursus enim. Nulla at ex feugiat diam tempus cursus. Nunc maximus, massa ut pellentesque semper, ex nibh bibendum justo, condimentum sollicitudin nibh odio sed ipsum. Aliquam erat volutpat. Nam sagittis eros ut leo mollis condimentum. Fusce ac quam ut velit dictum blandit.
+
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lacinia augue nec ultrices gravida. Praesent fermentum, nibh sit amet porta rhoncus, turpis diam sollicitudin nisl, in interdum magna arcu ac metus. Ut finibus, odio nec aliquet facilisis, diam purus egestas ligula, ut imperdiet nisi mauris in leo. Nulla leo ligula, sollicitudin at nunc ut, consectetur sagittis est. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec at lacus ut arcu interdum rutrum. Praesent tempor, justo vel rutrum tristique, metus turpis euismod neque, eget fringilla ipsum quam vel ipsum. Nam ornare, neque ac porta dictum, odio magna viverra ante, quis accumsan risus est vel enim.
+                    </p>
+                </div>
+            </div>
+        </div>
+        }
+        <div class="col no-gutters main-content pl-0">
+            <main role="main" class="pb-3">
+                @RenderBody()
+                <div class="test">a</div>
+            </main>
+
+        </div>
+    </div>
+    <footer class="border-top text-muted">
         <div class="container" style="margin-left:10px; color:#fff;">
             &copy; 2020 - @AppSettings.Value.ApplicationName
         </div>
     </footer>
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @if (signInUser.IsSignedIn(User))
+    {
+        <script src="~/lib/signalr/signalr.min.js"></script>
+        <script src="~/js/chatClient.js" asp-append-version="true"></script>
+    }
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -2,9 +2,21 @@
 @{
     ViewData["Title"] = "Contacts";
 }
+
+@model Flame_Social_Network_Web_App.Models.Chat.ContactsList
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Welcome to Contacts page</p>
+
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <form asp-action="SetNickname" asp-controller="Contacts" method="post">
+            <p>Pick a name</p>
+            <input type="text" name="nickname" placeholder="nickname" value="">
+            <button type="submit">Confirm</button>
+        </form>
+    }
 </div>
 
 
