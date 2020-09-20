@@ -10,8 +10,14 @@ connection.on("UserConnected", function () {
     connection.invoke("ListContacts");
 });
 
+connection.on("UserDisconnected", function () {
+    connection.invoke("ListContacts");
+});
+
 // Contacts List
 connection.on("ListContacts", function (list) {
+    var counter = document.getElementById("listCount")
+
     // we are looking for the contact list
     var ul = document.getElementById("list");
     if (ul == null) {
@@ -40,4 +46,8 @@ connection.on("ListContacts", function (list) {
 
 connection.on("alert", function (text) {
     alert(text);
+});
+
+connection.start().catch(function (err) {
+    return console.error(err.toString());
 });
