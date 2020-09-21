@@ -81,6 +81,12 @@ footer {
     word-wrap: break-word;
 }
 
+.text-overflow-hide {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 /* Direction */
 .direction-ltr {
     direction: ltr;
