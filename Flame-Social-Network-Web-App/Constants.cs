@@ -27,5 +27,8 @@ namespace Flame_Social_Network_Web_App
 
         // Waiting milliseconds time for reconnection
         public const int MaxReconnectWaitTime = 2000;
+
+        // Max open chat rooms per client
+        public const int MaxOpenChatRoomPerClient = 3;
     }
 }

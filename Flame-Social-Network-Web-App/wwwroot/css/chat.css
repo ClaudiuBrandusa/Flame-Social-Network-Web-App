@@ -127,6 +127,14 @@
     float: left;
 }
 
+.no-select {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
 .chat-exit {
     width: 10%;
     height: 100%;
@@ -193,7 +201,7 @@
     background-color: lightgray;
     display: inline-block;
     padding: 3px 6px;
-    border-radius: 15%;
+    border-radius: 1vw;
 }
 
 .recipient-avatar-img {
@@ -225,5 +233,6 @@
     background-color: darkgray;
     display: inline-block;
     padding: 3px 6px;
-    border-radius: 20%;
+    border-radius: 1vw;
+    word-break: break-all;
 }

@@ -80,44 +80,9 @@
                 <div class="test">a</div>*@
                 @if(signInUser.IsSignedIn(User))
                 {
-                    <div class="chat-space chat-space-vertical-position">
-                        <div class="chat-room">
-                            <div class="top-bar">
-                                <div class="chat-title pl-1">
-                                    <img class="recipient-avatar-img" src="~/images/avatar_icon.png" />
-                                    User
-                                </div>
-                                <div class="chat-exit text-center">X</div>
-                            </div>
-                            <div class="chat-history">
-                                <div class="pl-1 pr-1">
-                                    <div class="received-text-space">
-                                        <img class="recipient-avatar-img" src="~/images/avatar_icon.png" />
-                                        <div class="received-text">
-                                            Hey
-                                        </div>
-                                    </div>
-                                    <div class="sent-text-space">
-                                        <div class="sent-text">
-                                            Hey
-                                            <br>
-                                            <br>
-                                            Wassup?
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="control-bar">
-                                <div class="input-message">
-                                    <input name="input-message" class="h-100">
-                                </div>
-                                <div class="send-message">
-                                    <button type="submit" class="h-100 button-style">Send</button>
-                                </div>
-                            </div>
-
-                        </div>
-
+                    @Html.Hidden("Name",User.Identity.Name)
+                    <div class="chat-space chat-space-vertical-position" id="chat-space">
+                        
                     </div>
                 }
             </main>
