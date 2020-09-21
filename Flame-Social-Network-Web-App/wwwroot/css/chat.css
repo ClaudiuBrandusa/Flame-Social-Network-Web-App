@@ -32,14 +32,56 @@
     color: #99b898;
 }
 
-/* Chat Room */
 .chat-space {
     position: fixed;
-    bottom: 9vh;
     right: 0;
     max-height: 35vh;
 }
 
+
+@media only screen and (max-height: 1080px) {
+
+    .chat-space-vertical-position {
+        bottom: 2vh;
+    }
+}
+
+@media only screen and (max-height: 1024px) {
+
+    .chat-space-vertical-position {
+        bottom: 7vh;
+    }
+}
+
+@media only screen and (max-height: 900px) {
+
+    .chat-space-vertical-position {
+        bottom: 9vh;
+    }
+}
+
+@media only screen and (max-height: 854px) {
+
+    .chat-space-vertical-position {
+        bottom: 10vh;
+    }
+}
+
+@media only screen and (max-height: 720px) {
+
+    .chat-space-vertical-position {
+        bottom: 20vh;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+
+    .chat-space-vertical-position {
+        bottom: 35vh;
+    }
+}
+
+/* Chat Room */
 .chat-room {
     width: 260px;
     height: 330px;
