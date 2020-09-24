@@ -27,32 +27,11 @@ namespace Flame_Social_Network_Web_App.Hubs
             if(lost != null || lost != default)
             {
                 // then it's a lost connection
-                connection.CurrentChatRooms = lost.CurrentChatRooms;
                 LostConnections.Remove(lost);
-            }else
-            {
-                connection.CurrentChatRooms = new Queue<ChatRoom>();
             }
-            await Clients.All.SendAsync("UserConnected");
+            connection.CurrentChatRooms = new Queue<ChatRoom>();
 
-            /*if (lost != null || lost != default)
-            {
-                foreach(ChatRoom room in connection.CurrentChatRooms)
-                {
-                    if(room.Connections.Count == 2)
-                    {
-                        await Clients.Caller.SendAsync("openChatRoomWith", GetChatRoomReceiver(connection.Tag, room), room.Id);
-                    }
-                    else if(room.Connections.Count == 1)
-                    {
-                        // To Do
-                    }else
-                    {
-                        await Clients.Caller.SendAsync("openChatRoomWith", GetChatRoomReceivers(connection.Tag, room), room.Id);
-                    }
-                }
-            }
-*/
+            await Clients.All.SendAsync("UserConnected");
             await base.OnConnectedAsync();
         }
 
