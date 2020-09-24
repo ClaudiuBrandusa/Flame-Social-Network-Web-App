@@ -168,6 +168,7 @@ connection.on("SendMessageIn", function (chatroom_id, message) {
     text.innerText = message;
     text_space.appendChild(text);
     chat_content.appendChild(text_space);
+    chat_content.parentElement.scrollTo(0, chat_content.parentElement.scrollHeight);
 });
 
 connection.on("ReceiveMessageIn", function (chatroom_id, message, tag) {
@@ -195,6 +196,7 @@ connection.on("ReceiveMessageIn", function (chatroom_id, message, tag) {
     text.innerText = message;
     text_space.appendChild(text);
     chat_content.appendChild(text_space);
+    chat_content.parentElement.scrollTo(0, chat_content.parentElement.scrollHeight);
 });
 
 connection.on("closeChatRoom", function (room_id) {
