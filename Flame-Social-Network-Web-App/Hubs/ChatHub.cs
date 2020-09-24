@@ -20,16 +20,39 @@ namespace Flame_Social_Network_Web_App.Hubs
         static int chatRoomId = 0;
         public override async Task OnConnectedAsync()
         {
-            var connection = new ConnectionData { ConnectionId = Context.ConnectionId, Tag = Context.User.Identity.Name }; //Context.User.Identity.Name };
+            var connection = new ConnectionData { ConnectionId = Context.ConnectionId, Tag = Context.User.Identity.Name };
 
             CurrentConnections.Add(connection);
-            if(LostConnections.Contains(connection))
+            var lost = LostConnections.FirstOrDefault(c => c.Tag.Equals(connection.Tag));
+            if(lost != null || lost != default)
             {
                 // then it's a lost connection
-                LostConnections.Remove(connection);
+                connection.CurrentChatRooms = lost.CurrentChatRooms;
+                LostConnections.Remove(lost);
+            }else
+            {
+                connection.CurrentChatRooms = new Queue<ChatRoom>();
             }
-            connection.CurrentChatRooms = new Queue<ChatRoom>();
             await Clients.All.SendAsync("UserConnected");
+
+            /*if (lost != null || lost != default)
+            {
+                foreach(ChatRoom room in connection.CurrentChatRooms)
+                {
+                    if(room.Connections.Count == 2)
+                    {
+                        await Clients.Caller.SendAsync("openChatRoomWith", GetChatRoomReceiver(connection.Tag, room), room.Id);
+                    }
+                    else if(room.Connections.Count == 1)
+                    {
+                        // To Do
+                    }else
+                    {
+                        await Clients.Caller.SendAsync("openChatRoomWith", GetChatRoomReceivers(connection.Tag, room), room.Id);
+                    }
+                }
+            }
+*/
             await base.OnConnectedAsync();
         }
 
@@ -139,8 +162,28 @@ namespace Flame_Social_Network_Web_App.Hubs
 
             user.CurrentChatRooms.Enqueue(chatRoom);
             Clients.Caller.SendAsync("openChatRoomWith", tag, chatRoom.Id);
+            //Clients.Caller.SendAsync("GetMessages", chatRoom.Id, chatRoom.Messages, user.Tag);
             // here we should load the history
             return Task.CompletedTask;
+        }
+
+        public Task GetMessages(int chatRoomId)
+        {
+            var user = GetConnectionDataByTag(Context.User.Identity.Name);
+            if(user == null)
+            {
+                return Task.CompletedTask;
+            }
+            ChatRoom chatRoom = GetChatRoomById(chatRoomId);
+            if(chatRoom == null)
+            {
+                return Task.CompletedTask;
+            }
+            if(!chatRoom.Connections.Any(c => c.Equals(user)))
+            {
+                return Task.CompletedTask;
+            }
+            return Clients.Caller.SendAsync("GetMessages", chatRoom.Id, chatRoom.Messages, user.Tag);
         }
 
         /*public Task EndChatWith(string tag) //deprecated
@@ -251,20 +294,28 @@ namespace Flame_Social_Network_Web_App.Hubs
                         {
                             Clients.Caller.SendAsync("closeChatRoom", receiver.CurrentChatRooms.Dequeue().Id);
                         }
-                        // then we have to add the reference
+                    }
+                    AddMessageToChatRoom(tmp, message, user);
+                    if(receiver.CurrentChatRooms.Count > 0 && receiver.CurrentChatRooms.Any(r => r.Id.Equals(chatRoomId)))
+                    {
+                        Clients.Client(receiver.ConnectionId).SendAsync("ReceiveMessageIn", tmp.Id, message, user.Tag);
+                    }
+                    else
+                    {
+                        // by opening the chat room we get the last sent messages
+                        Clients.Client(receiver.ConnectionId).SendAsync("openChatRoomWith", user.Tag, chatRoomId);
                         receiver.CurrentChatRooms.Enqueue(tmp);
                     }
-                    Clients.Client(receiver.ConnectionId).SendAsync("openChatRoomWith", user.Tag, tmp.Id);
-                    Clients.Client(receiver.ConnectionId).SendAsync("ReceiveMessageIn", tmp.Id, message, user.Tag);
-                }else if(tmp.Connections.Count == 1)
+                }
+                else if(tmp.Connections.Count == 1)
                 {
 
                     // then we have nothing to do here
                 }else
                 {
                     SendMessageInChatRoom(tmp, message, user.Tag);
+                    AddMessageToChatRoom(tmp, message, user);
                 }
-                AddMessageToChatRoom(tmp, message, user);
                 return Clients.Caller.SendAsync("SendMessageIn", tmp.Id, message);
             } // else we search the chatroom from the list
             ChatRoom chatRoom = GetChatRoomById(chatRoomId);

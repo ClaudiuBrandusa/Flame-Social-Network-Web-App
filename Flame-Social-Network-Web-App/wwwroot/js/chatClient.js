@@ -145,6 +145,7 @@ connection.on("openChatRoomWith", function (receiver, chatroom_id) {
     send_message.appendChild(submit_button);
     control_bar.appendChild(send_message);
     room.appendChild(control_bar);
+    connection.invoke("GetMessages", chatroom_id);
 });
 
 connection.on("SendMessageIn", function (chatroom_id, message) {
@@ -197,6 +198,50 @@ connection.on("ReceiveMessageIn", function (chatroom_id, message, tag) {
     text_space.appendChild(text);
     chat_content.appendChild(text_space);
     chat_content.parentElement.scrollTo(0, chat_content.parentElement.scrollHeight);
+});
+
+connection.on("GetMessages", function (chatRoomId, messages, userId) {
+    // validation
+    var space = document.getElementById("chat-space");
+    if (space == null) {
+        return; // then we can't get the chat room
+    }
+    if (document.getElementById("room_id_" + chatRoomId) == null) {
+        // then something went wrong
+        return;
+    }
+    var chat_content = document.getElementById("chat_content_room_id_" + chatRoomId);
+    if (chat_content == null) {
+        // then something went wrong
+        return;
+    }
+
+    // then we insert the messages
+    for (var i = 0; i < messages.length; i++) {
+        if (messages[i].sender == userId) {
+            var text_space = document.createElement("div");
+            text_space.classList.add("sent-text-space");
+            var text = document.createElement("div");
+            text.classList.add("sent-text");
+            text.innerText = messages[i].content;
+            text_space.appendChild(text);
+            chat_content.appendChild(text_space);
+            chat_content.parentElement.scrollTo(0, chat_content.parentElement.scrollHeight);
+        } else {
+            var text_space = document.createElement("div");
+            text_space.classList.add("received-text-space");
+            var img = document.createElement("img");
+            img.src = location.protocol + "//" + location.host + "/images/avatar_icon.png";
+            img.classList.add("recipient-avatar-img");
+            text_space.appendChild(img);
+            var text = document.createElement("div");
+            text.classList.add("received-text");
+            text.innerText = messages[i].content;
+            text_space.appendChild(text);
+            chat_content.appendChild(text_space);
+            chat_content.parentElement.scrollTo(0, chat_content.parentElement.scrollHeight);
+        }
+    }
 });
 
 connection.on("closeChatRoom", function (room_id) {
