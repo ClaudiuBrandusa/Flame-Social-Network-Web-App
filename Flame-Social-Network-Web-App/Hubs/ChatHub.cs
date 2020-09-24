@@ -82,6 +82,11 @@ namespace Flame_Social_Network_Web_App.Hubs
                 // then we can't talk
             }
             ConnectionData user = GetConnectionDataByTag(Context.User.Identity.Name);
+            if(user == null)
+            {
+                // then something went wrong
+                return Task.CompletedTask;
+            }
             // if we have a chatroom already open with tag
             if(user.CurrentChatRooms.Count > 0 && user.CurrentChatRooms.Any(x => x.Connections.Any(c => c.Tag.Equals(tag))))
             {
@@ -176,6 +181,7 @@ namespace Flame_Social_Network_Web_App.Hubs
             if (!IsConnected(Context.User.Identity.Name))
             {
                 // then something went wrong
+                Clients.Caller.SendAsync("alert", "the user that you want to end chat with is not connected");
                 return Task.CompletedTask;
             }
             ConnectionData user = GetConnectionDataByTag(Context.User.Identity.Name);
@@ -230,7 +236,6 @@ namespace Flame_Social_Network_Web_App.Hubs
                 if(tmp.Connections.Count == 2)
                 {
                     ConnectionData receiver = GetChatRoomReceiver(user.Tag, tmp);
-                    Clients.Caller.SendAsync("alert", receiver.Tag);
                     if (receiver == null)
                     {
                         Clients.Caller.SendAsync("alert", "null");
@@ -240,26 +245,26 @@ namespace Flame_Social_Network_Web_App.Hubs
                         Clients.Caller.SendAsync("alert", "default");
                     }
                     // we check if the receiver does not have a reference to the current chat room
-                    if (receiver.CurrentChatRooms.Any(r => r.Id != tmp.Id))
+                    if (receiver.CurrentChatRooms.Count == 0 || receiver.CurrentChatRooms.Any(r => r.Id != tmp.Id))
                     {
-                        if(receiver.CurrentChatRooms.Count >= Constants.MaxOpenChatRoomPerClient)
+                        if (receiver.CurrentChatRooms.Count >= Constants.MaxOpenChatRoomPerClient)
                         {
                             Clients.Caller.SendAsync("closeChatRoom", receiver.CurrentChatRooms.Dequeue().Id);
                         }
                         // then we have to add the reference
-
-                        
                         receiver.CurrentChatRooms.Enqueue(tmp);
                     }
                     Clients.Client(receiver.ConnectionId).SendAsync("openChatRoomWith", user.Tag, tmp.Id);
                     Clients.Client(receiver.ConnectionId).SendAsync("ReceiveMessageIn", tmp.Id, message, user.Tag);
                 }else if(tmp.Connections.Count == 1)
                 {
-                    // then we have nothing to here
+
+                    // then we have nothing to do here
                 }else
                 {
                     SendMessageInChatRoom(tmp, message, user.Tag);
                 }
+                AddMessageToChatRoom(tmp, message, user);
                 return Clients.Caller.SendAsync("SendMessageIn", tmp.Id, message);
             } // else we search the chatroom from the list
             ChatRoom chatRoom = GetChatRoomById(chatRoomId);
@@ -276,12 +281,14 @@ namespace Flame_Social_Network_Web_App.Hubs
             }
             Clients.Caller.SendAsync("openChatRoomWith", user.Tag, chatRoom.Id);
             Clients.Caller.SendAsync("SendMessageIn", chatRoom.Id, message);
+            // adding the message to the chatroom's history
+            AddMessageToChatRoom(chatRoom, message, user);
             Clients.Client(GetChatRoomReceiver(user.Tag, chatRoom).ConnectionId).SendAsync("ReceiveMessageIn", chatRoom.Id, message);
             SendMessageInChatRoom(chatRoom, message, user.Tag);
             return Task.CompletedTask;
         }
 
-        public Task OpenChatRoom(int chatRoomId)
+        public Task OpenChatRoom(int chatRoomId) // Deprecated for now
         {
             // firstly we validate the caller
             if(!IsConnected(Context.User.Identity.Name))
@@ -457,6 +464,11 @@ namespace Flame_Social_Network_Web_App.Hubs
                 }
             }
             return Task.CompletedTask;
+        }
+
+        static void AddMessageToChatRoom(ChatRoom chatRoom, string message, ConnectionData sender)
+        {
+            chatRoom.Messages.Add(new Message() { ChatRoomId = chatRoom.Id, Content = message, Sender = sender.Tag, Time = DateTime.Now });
         }
     }
 }
